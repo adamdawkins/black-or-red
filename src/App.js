@@ -15,6 +15,13 @@ function App() {
       setTheColour("black");
     }
   };
+
+  const reset = (event) => {
+    event.preventDefault();
+    setChosenColour(null);
+    setTheColour(null);
+  };
+
   return (
     <div className="App">
       <h1>Choose a colour :)</h1>
@@ -46,8 +53,9 @@ function App() {
                 The card is{" "}
                 <span className={`text-${theColour}-500`}>{theColour}</span>
               </p>
-              {theColour == chosenColour && <p>You're the winner :)!</p>}
+              {theColour === chosenColour && <p>You're the winner :)!</p>}
               {theColour !== chosenColour && <p>You're the loser :(!</p>}
+              <button onClick={(event) => reset(event)}>Start Again</button>
             </>
           )}
         </>
