@@ -29,6 +29,11 @@ function App() {
     setDealStarted(false);
   };
 
+  const textColor = {
+    red: "text-red-500",
+    black: "text-black-500",
+  };
+
   return (
     <div className="App">
       <h1>Choose a colour :)</h1>
@@ -43,7 +48,7 @@ function App() {
         <>
           <p>
             You have chosen{" "}
-            <span className={`text-${chosenColour}-500`}>{chosenColour}</span>
+            <span className={textColor[chosenColour]}>{chosenColour}</span>
           </p>
 
           {!dealStarted && (
