@@ -1,0 +1,12 @@
+---------------------- v0.0.1 [🍅🍅]
+[x] Player choose black or red
+[x] Randomly show black or red (50/50)
+[x] say who won
+---------------------- v0.0.2
+[ ] a delay before it says who won
+[ ] Use a real deck of cards and pick one
+[ ] say if the card is black or red
+---------------------- v 0.0.3
+[ ] You get 1 life to start
+[ ] See how many turns you can do before you run out of life
+[ ] Leaderboard (database)
