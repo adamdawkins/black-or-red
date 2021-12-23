@@ -3,23 +3,30 @@ import "./index.css";
 
 function App() {
   const [chosenColour, setChosenColour] = useState(null);
+  const [dealStarted, setDealStarted] = useState(false);
   const [theColour, setTheColour] = useState(null);
 
   const deal = (event) => {
     event.preventDefault();
+    setDealStarted(true);
 
-    const random = Math.random() * 10;
-    if (random <= 5) {
-      setTheColour("red");
-    } else {
-      setTheColour("black");
-    }
+    const selectCard = () => {
+      const random = Math.random() * 10;
+      if (random <= 5) {
+        setTheColour("red");
+      } else {
+        setTheColour("black");
+      }
+    };
+
+    setTimeout(selectCard, 2000);
   };
 
   const reset = (event) => {
     event.preventDefault();
     setChosenColour(null);
     setTheColour(null);
+    setDealStarted(false);
   };
 
   return (
@@ -39,13 +46,19 @@ function App() {
             <span className={`text-${chosenColour}-500`}>{chosenColour}</span>
           </p>
 
-          <button
-            onClick={(event) => deal(event)}
-            disabled={theColour}
-            className={["border border-black p-3 font-bold text-xl"]}
-          >
-            Deal!
-          </button>
+          {!dealStarted && (
+            <button
+              onClick={(event) => deal(event)}
+              disabled={theColour}
+              className={["border border-black p-3 font-bold text-xl"]}
+            >
+              Deal!
+            </button>
+          )}
+
+          {dealStarted && !theColour && (
+            <i className="fad fa-spinner-third animate-spin text-3xl text-green-500"></i>
+          )}
 
           {theColour && (
             <>
