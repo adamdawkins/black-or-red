@@ -2,22 +2,53 @@ import { useState } from "react";
 import "./index.css";
 import ChooseAColour from "./ChooseAColour";
 
+const cardValues = ["A", 2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K"];
+const suits = ["diamond", "heart", "club", "spade"];
+const deck = [];
+
+suits.forEach((suit) => {
+  cardValues.forEach((value) => {
+    deck.push({ value: value, suit: suit });
+  });
+});
+
+const Card = ({ value, suit }) => {
+  let colour = "text-black-500";
+
+  if (suit === "heart" || suit === "diamond") {
+    colour = "text-red-500";
+  }
+
+  return (
+    <div
+      className={`border w-24 h-36 m-5 text-3xl flex justify-center items-center ${colour} rounded shadow-lg`}
+    >
+      <span className="mr-1">{value}</span>
+      <i className={`fas fa-${suit}`}></i>
+    </div>
+  );
+};
+
+const getColour = ({ suit }) => {
+  if (suit === "diamond" || suit === "heart") {
+    return "red";
+  }
+
+  return "black";
+};
+
 function App() {
   const [chosenColour, setChosenColour] = useState(null);
   const [dealStarted, setDealStarted] = useState(false);
-  const [theColour, setTheColour] = useState(null);
+  const [theCard, setTheCard] = useState(null);
 
   const deal = (event) => {
     event.preventDefault();
     setDealStarted(true);
 
     const selectCard = () => {
-      const random = Math.random() * 10;
-      if (random <= 5) {
-        setTheColour("red");
-      } else {
-        setTheColour("black");
-      }
+      const position = Math.floor(Math.random() * 52);
+      setTheCard(deck[position]);
     };
 
     setTimeout(selectCard, 1000);
@@ -26,7 +57,7 @@ function App() {
   const reset = (event) => {
     event.preventDefault();
     setChosenColour(null);
-    setTheColour(null);
+    setTheCard(null);
     setDealStarted(false);
   };
 
@@ -36,7 +67,11 @@ function App() {
   };
 
   if (!chosenColour) {
-    return <ChooseAColour setChosenColour={setChosenColour} />;
+    return (
+      <div className="App">
+        <ChooseAColour setChosenColour={setChosenColour} />
+      </div>
+    );
   }
 
   return (
@@ -49,25 +84,22 @@ function App() {
       {!dealStarted && (
         <button
           onClick={(event) => deal(event)}
-          disabled={theColour}
+          disabled={theCard}
           className={["border border-black p-3 font-bold text-xl"]}
         >
           Deal!
         </button>
       )}
 
-      {dealStarted && !theColour && (
-        <i className="fad fa-spinner-third animate-spin text-3xl text-green-500"></i>
+      {dealStarted && !theCard && (
+        <i className="fad fa-spinner-third animate-spin text-3xl text-gray-500"></i>
       )}
 
-      {theColour && (
+      {theCard && (
         <>
-          <p className="text-xl">
-            The card is{" "}
-            <span className={`text-${theColour}-500`}>{theColour}</span>
-          </p>
-          {theColour === chosenColour && <p>You're the winner :)!</p>}
-          {theColour !== chosenColour && <p>You're the loser :(!</p>}
+          <Card {...theCard} />
+          {getColour(theCard) === chosenColour && <p>You're the winner :)!</p>}
+          {getColour(theCard) !== chosenColour && <p>You're the loser :(!</p>}
           <button onClick={(event) => reset(event)}>Start Again</button>
         </>
       )}
